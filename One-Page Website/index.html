@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asmaa's Pet Sanctuary</title>
+    <style>
+        /* --- CORE STYLING & COLORS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth; /* Makes the bookmark jumps smooth */
+        }
+
+        body {
+            background-color: #fdfbf7; /* Soft cream background */
+            color: #2d2a26; /* Deep charcoal for high contrast readability */
+            line-height: 1.6;
+        }
+
+        /* --- STYLISH NAVIGATION --- */
+        nav {
+            background-color: #4a3728; /* Deep earth brown */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: #f7ebdf;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #e07a5f; /* Accent terracotta pop */
+            background-color: #5c4533;
+            border-radius: 5px;
+        }
+
+        /* --- SECTION WRAPPERS --- */
+        section {
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Alternating background color for unique modern layout contrast */
+        .alt-bg {
+            background-color: #f4ebe1; 
+            max-width: 100%;
+            padding: 60px max(20px, calc((100% - 1000px) / 2));
+        }
+
+        h1, h2 {
+            color: #8d5b4c; /* Terracotta title colors */
+            margin-bottom: 15px;
+        }
+
+        /* --- HOME SECTION --- */
+        #home {
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        #home h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        #home p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #615a52;
+        }
+
+        /* --- GALLERY SECTION --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .pet-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e6dfd5;
+            text-align: center;
+        }
+
+        .pet-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover; /* Prevents image stretching */
+            cursor: pointer; /* Makes it clear the image is clickable */
+            transition: transform 0.3s ease;
+        }
+
+        .pet-card img:hover {
+            transform: scale(1.03); /* Subtle zoom on hover */
+        }
+
+        .pet-card h3 {
+            padding: 15px 15px 5px 15px;
+            color: #4a3728;
+        }
+
+        .pet-card p {
+            padding: 0 15px 15px 15px;
+            font-size: 0.95rem;
+            color: #615a52;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: 20px auto 0 auto;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- CONTACT FORM SECTION --- */
+        form {
+            background-color: #ffffff;
+            max-width: 550px;
+            margin: 20px auto 0 auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e6dfd5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a3728;
+        }
+
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #c8beab;
+            border-radius: 6px;
+            background-color: #fdfbf7;
+            font-size: 1rem;
+        }
+
+        form input:focus, form textarea:focus {
+            outline: none;
+            border-color: #e07a5f;
+        }
+
+        form button {
+            background-color: #e07a5f;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        form button:hover {
+            background-color: #c9654b;
+        }
+
+        /* --- LIGHTBOX MODAL STYLING --- */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 85%;
+            max-height: 80vh;
+            border-radius: 4px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-modal.show .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #f7ebdf;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+            user-select: none;
+        }
+
+        .lightbox-close:hover {
+            color: #e07a5f;
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #f7ebdf;
+            font-size: 50px;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s, background-color 0.2s;
+            border-radius: 5px;
+        }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            color: #e07a5f;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #2d2a26;
+            color: #bebaa7;
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#gallery">Our Animals</a>
+        <a href="#video">Watch Us</a>
+        <a href="#contact">Adopt / Contact</a>
+    </nav>
+
+    <section id="home">
+        <h1>Asmaa's Pet Sanctuary</h1>
+        <p>Welcome to a cozy space where healthy, happy animals wait to find their forever homes. Curated and managed with absolute care by Asmaa Mohammed.</p>
+    </section>
+
+    <div class="alt-bg" id="gallery">
+        <section style="padding: 0;">
+            <h2>Meet Our Curated Companions</h2>
+            <p>Every pet is unique, socialized, and fully vetted before joining our showroom.</p>
+            
+            <div class="gallery-grid">
+                <div class="pet-card">
+                    <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500" alt="Happy brown dog">
+                    <h3>Charlie</h3>
+                    <p>A high-energy golden mix pup who loves outdoor running and fetching sticks.</p>
+                </div>
+
+                <div class="pet-card">
+                    <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500" alt="Sleeping cat">
+                    <h3>Oliver</h3>
+                    <p>A quiet, gentle companion looking for a cozy, sunny apartment window setup.</p>
+                </div>
+
+                <div class="pet-card">
+                    <img src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=500" alt="White rabbit">
+                    <h3>Bella</h3>
+                    <p>Very calm, incredibly soft coat, and perfectly content eating fresh organic greens.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section id="video">
+        <h2>Sanctuary Highlights</h2>
+        <p>Take a virtual look inside our social playrooms to see how our pets interact together daily.</p>
+        
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/gTco2767Iao" title="Playful Puppies Video" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <div class="alt-bg" id="contact">
+        <section style="padding: 0;">
+            <h2 style="text-align: center;">Inquire or Say Hello</h2>
+            <p style="text-align: center;">Interested in one of our pets? Fill out the details below to connect with Asmaa.</p>
+            
+            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Thank you! Your adoption application has been mock-submitted.');">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="john@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pet-choice">Pet You're Interested In</label>
+                    <select id="pet-choice">
+                        <option value="charlie">Charlie (Dog)</option>
+                        <option value="oliver">Oliver (Cat)</option>
+                        <option value="bella">Bella (Rabbit)</option>
+                        <option value="general">General Inquiry</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" rows="4" placeholder="Tell us a bit about your home environment..." required></textarea>
+                </div>
+
+                <button type="submit">Submit Request</button>
+            </form>
+        </section>
+    </div>
+
+    <div id="lightbox" class="lightbox-modal">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <span class="lightbox-prev" id="lightbox-prev">&#10094;</span>
+        <div style="text-align: center; width: 100%;">
+            <img class="lightbox-content" id="lightbox-img" src="" alt="">
+        </div>
+        <span class="lightbox-next" id="lightbox-next">&#10095;</span>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Asmaa's Pet Sanctuary | Designed and Programmed by Asmaa Mohammed for Course Presentation.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryImages = document.querySelectorAll('.gallery-grid .pet-card img');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const closeBtn = document.getElementById('lightbox-close');
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            
+            let currentIndex = 0;
+
+            // Open Lightbox
+            function openLightbox(index) {
+                currentIndex = index;
+                lightboxImg.src = galleryImages[currentIndex].src;
+                lightboxImg.alt = galleryImages[currentIndex].alt;
+                lightbox.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Stop page scrolling when open
+            }
+
+            // Close Lightbox
+            function closeLightbox() {
+                lightbox.classList.remove('show');
+                document.body.style.overflow = 'auto'; // Re-enable layout scrolling
+            }
+
+            // Show Next Image
+            function showNext() {
+                currentIndex = (currentIndex + 1) % galleryImages.length;
+                lightboxImg.src = galleryImages[currentIndex].src;
+                lightboxImg.alt = galleryImages[currentIndex].alt;
+            }
+
+            // Show Previous Image
+            function showPrev() {
+                currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+                lightboxImg.src = galleryImages[currentIndex].src;
+                lightboxImg.alt = galleryImages[currentIndex].alt;
+            }
+
+            // Bind click events to gallery images
+            galleryImages.forEach((img, index) => {
+                img.addEventListener('click', () => openLightbox(index));
+            });
+
+            // Control event listeners
+            closeBtn.addEventListener('click', closeLightbox);
+            nextBtn.addEventListener('click', showNext);
+            prevBtn.addEventListener('click', showPrev);
+
+            // Close when clicking outside the picture frame
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target.parentElement === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            // Keyboard Navigation (Escape, Left, Right Arrows)
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('show')) return;
+                
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') showNext();
+                if (e.key === 'ArrowLeft') showPrev();
+            });
+        });
+    </script>
+
+</body>
+</html>
